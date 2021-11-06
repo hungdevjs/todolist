@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-function App() {
+import './scss/main.scss';
+
+import Loading from './components/commons/Loading';
+import store from './redux/_store';
+import { notAuthRoutes } from './configs/routes';
+import MainLayout from './layout/MainLayout';
+
+const App: FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <ToastContainer autoClose={2000} hideProgressBar newestOnTop />
+      <Loading />
+      <Router>
+        <Switch>
+          {notAuthRoutes.map((route) => (
+            <Route
+              key={route.name}
+              path={route.path}
+              component={route.component}
+              exact={route.exact}
+            />
+          ))}
+          <Route path="/" component={MainLayout} />
+        </Switch>
+      </Router>
+    </Provider>
   );
-}
+};
 
 export default App;

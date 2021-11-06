@@ -1,0 +1,9 @@
+@import '../abstracts/variables';
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $zIndex-max;
+  background-color: $opacity-color;
+}
