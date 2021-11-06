@@ -5,3 +5,10 @@ export const ROUTES = {
 };
 
 export const USERNAME = 'username';
+
+export const TODOS = 'todos';
+
+export const SORTBY = {
+  HEADER: 'header',
+  CREATEDAT: 'createdAt',
+};
