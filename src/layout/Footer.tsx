@@ -6,8 +6,8 @@ const Footer: FC = () => {
   return (
     <div className="d-flex align-items-center justify-content-center footer">
       From <b className="mx-2">hungdev.js</b> with{' '}
-      <KeyboardIcon className="mx-2 keyboard" /> and
-      <FavoriteIcon className="mx-2 heart" />
+      <KeyboardIcon className="mx-2 text-primary" /> and
+      <FavoriteIcon className="mx-2 text-danger" />
     </div>
   );
 };

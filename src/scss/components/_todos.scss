@@ -1,0 +1,27 @@
+@import '../abstracts/variables';
+
+.todo-item {
+  border-radius: 8px;
+  box-shadow: 0 2px 5px 0 $box-shadow-color, 0 2px 10px 0 $box-shadow-color;
+}
+
+.todo-item-info {
+  font-size: 0.8em;
+  color: $gray;
+}
+
+.todo-item-header {
+  font-weight: 600;
+}
+
+.todo-item-image {
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.todo-item-description {
+  font-size: 0.9em;
+  color: $dark-gray;
+}
