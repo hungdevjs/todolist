@@ -3,6 +3,7 @@ import { TODOS } from '../utils/constants';
 import { TodoItem } from '../interfaces/todos';
 
 const todos = firebase.firestore().collection(TODOS);
+const storage = firebase.storage();
 
 export const getTodos = (callback: Function) => {
   todos.onSnapshot((snapshot) => {
@@ -31,4 +32,25 @@ export const updateTodo = async (todoId: string, data: Partial<TodoItem>) => {
 
 export const removeTodo = async (todoId: string) => {
   await todos.doc(todoId).delete();
+};
+
+export const uploadImage = (
+  file: any,
+  handleProgress: Function,
+  handleError: Function,
+  handleComplete: Function,
+) => {
+  const imageRef = storage.ref(`${Date.now()}-${file.name}`);
+  const task = imageRef.put(file);
+
+  const onProgress = (snapshot: any) => handleProgress(snapshot);
+
+  const onError = () => handleError();
+
+  const onComplete = async () => {
+    const url = await imageRef.getDownloadURL();
+    handleComplete(url);
+  };
+
+  task.on('state_changed', onProgress, onError, onComplete);
 };

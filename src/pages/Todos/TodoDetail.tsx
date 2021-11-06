@@ -11,6 +11,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import ClearIcon from '@mui/icons-material/Clear';
+import ImageIcon from '@mui/icons-material/Image';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import moment from 'moment';
@@ -23,12 +24,19 @@ const schema = yup.object({
   header: yup.string().trim().required('Header is required'),
   description: yup.string().trim().required('Description is required'),
   isDone: yup.boolean().required('Status is required'),
-  image: yup.string().trim().required('Image is required'),
 });
 
 const TodoDetail: FC = () => {
-  const { data, updateData, isEditing, setIsEditing, backToList } =
-    useTodoDetail();
+  const {
+    data,
+    submit,
+    isEditing,
+    setIsEditing,
+    backToList,
+    imagePreviewUrl,
+    handleImageChange,
+    todoId,
+  } = useTodoDetail();
 
   return (
     <Formik
@@ -36,7 +44,7 @@ const TodoDetail: FC = () => {
       enableReinitialize
       validationSchema={schema}
       onSubmit={(values) => {
-        updateData(values);
+        submit(values);
       }}
     >
       {({
@@ -53,17 +61,42 @@ const TodoDetail: FC = () => {
           spacing={2}
           className="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center"
         >
+          <input
+            className="d-none"
+            type="file"
+            id="uploadFile"
+            onChange={handleImageChange}
+            accept="image/x-png,image/jpeg"
+          />
+          <label htmlFor="uploadFile" id="openInputFile" className="mb-0" />
           <Grid item md={4}>
             <div className="mb-2">
               <Button onClick={() => backToList()}>Back to list</Button>
             </div>
             <Card sx={{ maxWidth: 320 }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={values.image || 'https://picsum.photos/200'}
-                alt="todo"
-              />
+              {imagePreviewUrl || values.image ? (
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={imagePreviewUrl || values.image}
+                  alt="todo"
+                />
+              ) : (
+                <div className="d-flex align-items-center justify-content-center todo-image-container">
+                  <Button
+                    size="small"
+                    startIcon={<ImageIcon />}
+                    onClick={() => {
+                      const fileLabel =
+                        document.getElementById('openInputFile');
+                      fileLabel?.click();
+                    }}
+                  >
+                    Add image
+                  </Button>
+                </div>
+              )}
+
               <CardContent>
                 {isEditing ? (
                   <>
@@ -129,7 +162,7 @@ const TodoDetail: FC = () => {
                 >
                   {isEditing ? 'Save' : 'Edit'}
                 </Button>
-                {isEditing && (
+                {isEditing && !!todoId && (
                   <Button
                     size="small"
                     startIcon={<ClearIcon />}

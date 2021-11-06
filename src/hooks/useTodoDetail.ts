@@ -4,16 +4,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { setLoading } from '../redux/commons';
-import { getTodo, createTodo, updateTodo } from '../services/firebase.service';
+import {
+  getTodo,
+  createTodo,
+  updateTodo,
+  uploadImage,
+} from '../services/firebase.service';
 import { TodoItem } from '../interfaces/todos';
 import { State } from '../interfaces/states';
 import { ROUTES } from '../utils/constants';
+import useImageReader from './useImageReader';
 
 const initData: Partial<TodoItem> = {
   id: '',
   header: '',
   description: '',
-  image: 'https://picsum.photos/200',
+  image: '',
   isDone: false,
 };
 
@@ -24,6 +30,7 @@ const useTodoDetail = () => {
   const [data, setData] = useState<Partial<TodoItem>>(initData);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { todoId } = useParams<{ todoId: string }>();
+  const { file, imagePreviewUrl, handleImageChange } = useImageReader();
 
   const getData = useCallback(async () => {
     dispatch(setLoading(true));
@@ -42,7 +49,6 @@ const useTodoDetail = () => {
 
   const updateData = useCallback(
     async (newData: Partial<TodoItem>) => {
-      dispatch(setLoading(true));
       try {
         const { header, description, image, isDone } = newData;
         const dataToUpdate = {
@@ -65,9 +71,35 @@ const useTodoDetail = () => {
       } catch (err: any) {
         toast.error(err.message);
       }
-      dispatch(setLoading(false));
     },
     [todoId, user?.name, dispatch],
+  );
+
+  const submit = useCallback(
+    (newData: Partial<TodoItem>) => {
+      dispatch(setLoading(true));
+      try {
+        if (!file && !newData.image) throw new Error('Image is required');
+        if (file) {
+          const handleProgress = () => {};
+          const handleError = () => {
+            toast.error('Something is error. Try again!');
+            dispatch(setLoading(false));
+          };
+          const handleComplete = async (url: string) => {
+            newData.image = url;
+            await updateData(newData);
+            dispatch(setLoading(false));
+          };
+          uploadImage(file, handleProgress, handleError, handleComplete);
+        } else {
+          updateData(newData);
+        }
+      } catch (err: any) {
+        toast.error(err.message);
+      }
+    },
+    [file, updateData],
   );
 
   const backToList = useCallback(() => {
@@ -78,7 +110,17 @@ const useTodoDetail = () => {
     getData();
   }, [getData]);
 
-  return { data, updateData, isEditing, setIsEditing, backToList };
+  return {
+    data,
+    updateData,
+    isEditing,
+    setIsEditing,
+    backToList,
+    imagePreviewUrl,
+    handleImageChange,
+    submit,
+    todoId,
+  };
 };
 
 export default useTodoDetail;
