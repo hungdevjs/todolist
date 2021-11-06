@@ -24,6 +24,10 @@
 .todo-item-description {
   font-size: 0.9em;
   color: $dark-gray;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .todo-sort-btn {
@@ -39,4 +43,11 @@
 
 .todo-image-container {
   height: 140px;
+  position: relative;
+}
+
+.todo-change-image-btn {
+  position: absolute !important;
+  top: 16px;
+  right: 16px;
 }

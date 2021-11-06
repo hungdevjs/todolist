@@ -23,7 +23,13 @@ const useImageReader = () => {
     }
   }, []);
 
-  return { file, imagePreviewUrl, handleImageChange };
+  return {
+    file,
+    imagePreviewUrl,
+    setFile,
+    setImagePreviewUrl,
+    handleImageChange,
+  };
 };
 
 export default useImageReader;

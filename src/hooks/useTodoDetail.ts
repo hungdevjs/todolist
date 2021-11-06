@@ -12,7 +12,7 @@ import {
 } from '../services/firebase.service';
 import { TodoItem } from '../interfaces/todos';
 import { State } from '../interfaces/states';
-import { ROUTES } from '../utils/constants';
+import { INPUT_FILE_ID, LABEL_FILE_ID, ROUTES } from '../utils/constants';
 import useImageReader from './useImageReader';
 
 const initData: Partial<TodoItem> = {
@@ -30,7 +30,13 @@ const useTodoDetail = () => {
   const [data, setData] = useState<Partial<TodoItem>>(initData);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { todoId } = useParams<{ todoId: string }>();
-  const { file, imagePreviewUrl, handleImageChange } = useImageReader();
+  const {
+    file,
+    imagePreviewUrl,
+    setFile,
+    setImagePreviewUrl,
+    handleImageChange,
+  } = useImageReader();
 
   const getData = useCallback(async () => {
     dispatch(setLoading(true));
@@ -49,6 +55,7 @@ const useTodoDetail = () => {
 
   const updateData = useCallback(
     async (newData: Partial<TodoItem>) => {
+      dispatch(setLoading(true));
       try {
         const { header, description, image, isDone } = newData;
         const dataToUpdate = {
@@ -71,6 +78,7 @@ const useTodoDetail = () => {
       } catch (err: any) {
         toast.error(err.message);
       }
+      dispatch(setLoading(false));
     },
     [todoId, user?.name, dispatch],
   );
@@ -89,7 +97,6 @@ const useTodoDetail = () => {
           const handleComplete = async (url: string) => {
             newData.image = url;
             await updateData(newData);
-            dispatch(setLoading(false));
           };
           uploadImage(file, handleProgress, handleError, handleComplete);
         } else {
@@ -99,12 +106,24 @@ const useTodoDetail = () => {
         toast.error(err.message);
       }
     },
-    [file, updateData],
+    [file, updateData, dispatch],
   );
 
   const backToList = useCallback(() => {
     history.push(ROUTES.TODO_LIST);
   }, [history]);
+
+  const openInputFile = useCallback(() => {
+    const fileLabel = document.getElementById(LABEL_FILE_ID);
+    fileLabel?.click();
+  }, []);
+
+  const resetImage = useCallback(() => {
+    setImagePreviewUrl('');
+    setFile(null);
+    const input = document.getElementById(INPUT_FILE_ID) as any;
+    input && (input.value = '');
+  }, [setImagePreviewUrl, setFile]);
 
   useEffect(() => {
     getData();
@@ -120,6 +139,8 @@ const useTodoDetail = () => {
     handleImageChange,
     submit,
     todoId,
+    openInputFile,
+    resetImage,
   };
 };
 

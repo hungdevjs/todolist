@@ -17,7 +17,11 @@ import * as yup from 'yup';
 import moment from 'moment';
 
 import ErrorHandler from '../../components/commons/ErrorHandler';
-import { DATE_FORMAT } from '../../utils/constants';
+import {
+  DATE_FORMAT,
+  INPUT_FILE_ID,
+  LABEL_FILE_ID,
+} from '../../utils/constants';
 import useTodoDetail from '../../hooks/useTodoDetail';
 
 const schema = yup.object({
@@ -36,6 +40,8 @@ const TodoDetail: FC = () => {
     imagePreviewUrl,
     handleImageChange,
     todoId,
+    openInputFile,
+    resetImage,
   } = useTodoDetail();
 
   return (
@@ -64,33 +70,41 @@ const TodoDetail: FC = () => {
           <input
             className="d-none"
             type="file"
-            id="uploadFile"
+            id={INPUT_FILE_ID}
             onChange={handleImageChange}
             accept="image/x-png,image/jpeg"
           />
-          <label htmlFor="uploadFile" id="openInputFile" className="mb-0" />
+          <label htmlFor={INPUT_FILE_ID} id={LABEL_FILE_ID} className="mb-0" />
           <Grid item md={4}>
             <div className="mb-2">
               <Button onClick={() => backToList()}>Back to list</Button>
             </div>
-            <Card sx={{ maxWidth: 320 }}>
+            <Card sx={{ width: 320 }}>
               {imagePreviewUrl || values.image ? (
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={imagePreviewUrl || values.image}
-                  alt="todo"
-                />
+                <div className="todo-image-container">
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={imagePreviewUrl || values.image}
+                    alt="todo"
+                  />
+                  {isEditing && (
+                    <Button
+                      className="todo-change-image-btn"
+                      size="small"
+                      startIcon={<ImageIcon />}
+                      onClick={() => openInputFile()}
+                    >
+                      Change image
+                    </Button>
+                  )}
+                </div>
               ) : (
                 <div className="d-flex align-items-center justify-content-center todo-image-container">
                   <Button
                     size="small"
                     startIcon={<ImageIcon />}
-                    onClick={() => {
-                      const fileLabel =
-                        document.getElementById('openInputFile');
-                      fileLabel?.click();
-                    }}
+                    onClick={() => openInputFile()}
                   >
                     Add image
                   </Button>
@@ -167,6 +181,7 @@ const TodoDetail: FC = () => {
                     size="small"
                     startIcon={<ClearIcon />}
                     onClick={() => {
+                      resetImage();
                       setIsEditing(false);
                       resetForm();
                     }}

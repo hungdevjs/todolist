@@ -15,3 +15,6 @@ export const SORTBY = {
 };
 
 export const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
+
+export const INPUT_FILE_ID = 'upload-file';
+export const LABEL_FILE_ID = 'upload-file-label';
