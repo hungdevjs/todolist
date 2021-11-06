@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import moment from 'moment';
 import Grid from '@mui/material/Grid';
+import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -11,9 +12,15 @@ interface Props {
   item: ITodoItem;
   onEdit: Function;
   onRemove: Function;
+  toggleStatus: Function;
 }
 
-const TodoItem: FC<Props> = ({ item, onEdit, onRemove }: Props) => {
+const TodoItem: FC<Props> = ({
+  item,
+  onEdit,
+  onRemove,
+  toggleStatus,
+}: Props) => {
   return (
     <Grid container className="p-3 todo-item">
       <Grid item xs={3} className="d-flex justify-content-center">
@@ -42,6 +49,14 @@ const TodoItem: FC<Props> = ({ item, onEdit, onRemove }: Props) => {
           </div>
           <div className="mb-2">
             <p className="todo-item-description">{item.description}</p>
+          </div>
+          <div>
+            Completed:
+            <Checkbox
+              checked={item.isDone}
+              onChange={(e) => toggleStatus(item.id, e.target.checked)}
+              color="success"
+            />
           </div>
         </div>
       </Grid>

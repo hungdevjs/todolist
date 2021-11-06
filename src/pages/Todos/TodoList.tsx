@@ -20,6 +20,7 @@ const TodoList: FC = () => {
     setSortBy,
     goToTodoDetail,
     removeData,
+    toggleStatus,
   } = useTodoList();
 
   return (
@@ -54,6 +55,7 @@ const TodoList: FC = () => {
                   item={item}
                   onEdit={(id: string) => goToTodoDetail(id)}
                   onRemove={(id: string) => setRemoveTodoId(id)}
+                  toggleStatus={toggleStatus}
                 />
               </Grid>
             ))}

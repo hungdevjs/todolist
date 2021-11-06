@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Checkbox from '@mui/material/Checkbox';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -146,6 +147,16 @@ const TodoDetail: FC = () => {
                         <ErrorHandler text={errors.description} />
                       )}
                     </div>
+                    <div>
+                      Completed:
+                      <Checkbox
+                        checked={values.isDone}
+                        onChange={(e) =>
+                          setFieldValue('isDone', e.target.checked)
+                        }
+                        color="success"
+                      />
+                    </div>
                   </>
                 ) : (
                   <>
@@ -162,6 +173,9 @@ const TodoDetail: FC = () => {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {values.description}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Status: {values.isDone ? 'Completed' : 'Not completed'}
                     </Typography>
                   </>
                 )}

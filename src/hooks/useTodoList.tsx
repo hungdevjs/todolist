@@ -5,7 +5,11 @@ import { toast } from 'react-toastify';
 
 import { setTodos } from '../redux/todos';
 import { setLoading } from '../redux/commons';
-import { getTodos, removeTodo } from '../services/firebase.service';
+import {
+  getTodos,
+  removeTodo,
+  toggleStatusTodo,
+} from '../services/firebase.service';
 import { TodoItem } from '../interfaces/todos';
 import { State } from '../interfaces/states';
 import { SORTBY } from '../utils/constants';
@@ -42,6 +46,20 @@ const useTodoList = () => {
     dispatch(setLoading(false));
   }, [removeTodoId, dispatch]);
 
+  const toggleStatus = useCallback(
+    async (todoId: string, isDone: boolean) => {
+      dispatch(setLoading(true));
+      try {
+        await toggleStatusTodo(todoId, isDone);
+        toast.success('Update todo status successfully');
+      } catch (err: any) {
+        toast.error(err.message);
+      }
+      dispatch(setLoading(false));
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     getTodos((newData: TodoItem[]) => dispatch(setTodos(newData)));
   }, [dispatch]);
@@ -62,6 +80,7 @@ const useTodoList = () => {
     setSortBy,
     goToTodoDetail,
     removeData,
+    toggleStatus,
   };
 };
 

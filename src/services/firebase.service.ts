@@ -30,6 +30,10 @@ export const updateTodo = async (todoId: string, data: Partial<TodoItem>) => {
   await todos.doc(todoId).update(data);
 };
 
+export const toggleStatusTodo = async (todoId: string, isDone: boolean) => {
+  await todos.doc(todoId).update({ isDone });
+};
+
 export const removeTodo = async (todoId: string) => {
   await todos.doc(todoId).delete();
 };
