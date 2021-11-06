@@ -12,7 +12,7 @@ const initData: Partial<TodoItem> = {
   id: '',
   header: '',
   description: '',
-  image: '',
+  image: 'https://picsum.photos/200',
   isDone: false,
 };
 
@@ -28,6 +28,8 @@ const useTodoDetail = () => {
       if (todoId) {
         const todo = (await getTodo(todoId)) as TodoItem;
         setData(todo);
+      } else {
+        setIsEditing(true);
       }
     } catch (err: any) {
       toast.error(err.message);

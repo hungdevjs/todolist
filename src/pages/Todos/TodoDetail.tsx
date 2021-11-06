@@ -71,6 +71,7 @@ const TodoDetail: FC = () => {
                       <InputLabel>Header</InputLabel>
                       <OutlinedInput
                         className="w-100"
+                        placeholder="Header"
                         value={values.header}
                         onChange={(e) =>
                           setFieldValue('header', e.target.value)
@@ -87,6 +88,7 @@ const TodoDetail: FC = () => {
                         className="w-100"
                         multiline
                         rows={5}
+                        placeholder="Description"
                         value={values.description}
                         onChange={(e) =>
                           setFieldValue('description', e.target.value)
