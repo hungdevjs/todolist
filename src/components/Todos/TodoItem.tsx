@@ -28,7 +28,7 @@ const TodoItem: FC<Props> = ({ item, onEdit }: Props) => {
               </p>
               <p className="todo-item-header">{item.header}</p>
             </div>
-            <div>
+            <div className="d-flex">
               <EditIcon
                 className="cursor-pointer mx-2 text-primary"
                 onClick={() => onEdit(item.id)}
