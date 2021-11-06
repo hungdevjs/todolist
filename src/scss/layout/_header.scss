@@ -1,0 +1,8 @@
+@import '../abstracts/variables';
+
+.header {
+  height: 50px;
+  padding: 8px 16px;
+  font-size: 1.2em;
+  background-color: $theme;
+}

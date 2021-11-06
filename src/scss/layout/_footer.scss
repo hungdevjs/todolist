@@ -1,0 +1,14 @@
+@import '../abstracts/variables';
+
+.footer {
+  height: 50px;
+  background-color: $theme;
+}
+
+.keyboard {
+  color: $blue;
+}
+
+.heart {
+  color: $danger;
+}
