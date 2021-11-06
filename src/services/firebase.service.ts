@@ -28,3 +28,7 @@ export const createTodo = async (data: Partial<TodoItem>) => {
 export const updateTodo = async (todoId: string, data: Partial<TodoItem>) => {
   await todos.doc(todoId).update(data);
 };
+
+export const removeTodo = async (todoId: string) => {
+  await todos.doc(todoId).delete();
+};

@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { setTodos } from '../redux/todos';
-import { getTodos } from '../services/firebase.service';
+import { setLoading } from '../redux/commons';
+import { getTodos, removeTodo } from '../services/firebase.service';
 import { TodoItem } from '../interfaces/todos';
 import { State } from '../interfaces/states';
 import { SORTBY } from '../utils/constants';
@@ -13,6 +15,7 @@ const useTodoList = () => {
   const history = useHistory();
   const todos = useSelector((state: State) => state.todos.items);
   const [sortBy, setSortBy] = useState(SORTBY.HEADER);
+  const [removeTodoId, setRemoveTodoId] = useState<string | null>(null);
 
   const filteredTodos = useMemo(() => {
     if (sortBy === SORTBY.HEADER)
@@ -26,6 +29,19 @@ const useTodoList = () => {
     return todos;
   }, [todos, sortBy]);
 
+  const removeData = useCallback(async () => {
+    if (!removeTodoId) return;
+    dispatch(setLoading(true));
+    try {
+      await removeTodo(removeTodoId as string);
+      setRemoveTodoId(null);
+      toast.success('Remove todo successfully');
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+    dispatch(setLoading(false));
+  }, [removeTodoId, dispatch]);
+
   useEffect(() => {
     getTodos((newData: TodoItem[]) => dispatch(setTodos(newData)));
   }, [dispatch]);
@@ -38,7 +54,15 @@ const useTodoList = () => {
     [history],
   );
 
-  return { filteredTodos, sortBy, setSortBy, goToTodoDetail };
+  return {
+    filteredTodos,
+    sortBy,
+    removeTodoId,
+    setRemoveTodoId,
+    setSortBy,
+    goToTodoDetail,
+    removeData,
+  };
 };
 
 export default useTodoList;

@@ -10,9 +10,10 @@ import { DATE_FORMAT } from '../../utils/constants';
 interface Props {
   item: ITodoItem;
   onEdit: Function;
+  onRemove: Function;
 }
 
-const TodoItem: FC<Props> = ({ item, onEdit }: Props) => {
+const TodoItem: FC<Props> = ({ item, onEdit, onRemove }: Props) => {
   return (
     <Grid container className="p-3 todo-item">
       <Grid item xs={3} className="d-flex justify-content-center">
@@ -33,7 +34,10 @@ const TodoItem: FC<Props> = ({ item, onEdit }: Props) => {
                 className="cursor-pointer mx-2 text-primary"
                 onClick={() => onEdit(item.id)}
               />
-              <DeleteIcon className="cursor-pointer text-danger" />
+              <DeleteIcon
+                className="cursor-pointer text-danger"
+                onClick={() => onRemove(item.id)}
+              />
             </div>
           </div>
           <div className="mb-2">

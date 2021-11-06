@@ -7,6 +7,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import FullContent from '../../layout/FullContent';
 import TodoItem from '../../components/Todos/TodoItem';
+import DeleteModal from '../../components/Todos/DeleteModal';
 import useTodoList from '../../hooks/useTodoList';
 import { SORTBY } from '../../utils/constants';
 
@@ -14,11 +15,20 @@ const TodoList: FC = () => {
   const {
     filteredTodos: todos,
     sortBy,
+    removeTodoId,
+    setRemoveTodoId,
     setSortBy,
     goToTodoDetail,
+    removeData,
   } = useTodoList();
+
   return (
     <FullContent>
+      <DeleteModal
+        removeTodoId={removeTodoId}
+        setRemoveTodoId={setRemoveTodoId}
+        remove={removeData}
+      />
       <Container className="p-3">
         <div className="mb-2">
           <Button onClick={() => goToTodoDetail()}>Add new todo</Button>
@@ -43,6 +53,7 @@ const TodoList: FC = () => {
                 <TodoItem
                   item={item}
                   onEdit={(id: string) => goToTodoDetail(id)}
+                  onRemove={(id: string) => setRemoveTodoId(id)}
                 />
               </Grid>
             ))}

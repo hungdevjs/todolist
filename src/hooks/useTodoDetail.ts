@@ -1,8 +1,9 @@
 import { useEffect, useCallback, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import { setLoading } from '../redux/commons';
 import { getTodo, createTodo, updateTodo } from '../services/firebase.service';
 import { TodoItem } from '../interfaces/todos';
 import { State } from '../interfaces/states';
@@ -18,12 +19,14 @@ const initData: Partial<TodoItem> = {
 
 const useTodoDetail = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const user = useSelector((state: State) => state.commons.user);
   const [data, setData] = useState<Partial<TodoItem>>(initData);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { todoId } = useParams<{ todoId: string }>();
 
   const getData = useCallback(async () => {
+    dispatch(setLoading(true));
     try {
       if (todoId) {
         const todo = (await getTodo(todoId)) as TodoItem;
@@ -34,10 +37,12 @@ const useTodoDetail = () => {
     } catch (err: any) {
       toast.error(err.message);
     }
-  }, [todoId]);
+    dispatch(setLoading(false));
+  }, [todoId, dispatch]);
 
   const updateData = useCallback(
     async (newData: Partial<TodoItem>) => {
+      dispatch(setLoading(true));
       try {
         const { header, description, image, isDone } = newData;
         const dataToUpdate = {
@@ -60,8 +65,9 @@ const useTodoDetail = () => {
       } catch (err: any) {
         toast.error(err.message);
       }
+      dispatch(setLoading(false));
     },
-    [todoId, user?.name],
+    [todoId, user?.name, dispatch],
   );
 
   const backToList = useCallback(() => {
