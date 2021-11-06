@@ -24,11 +24,11 @@ const MainLayout: FC = () => {
       history.push(ROUTES.LOGIN);
     }
     dispatch(setLoading(false));
-  }, []);
+  }, [dispatch, history]);
 
   useEffect(() => {
     getAuth();
-  }, []);
+  }, [getAuth]);
 
   if (!user) return null;
   return (

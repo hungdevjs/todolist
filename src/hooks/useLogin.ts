@@ -9,11 +9,14 @@ const useLogin = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const login = useCallback((name: string) => {
-    localStorage.setItem(USERNAME, name);
-    dispatch(setUser({ name }));
-    history.push(ROUTES.TODO_LIST);
-  }, []);
+  const login = useCallback(
+    (name: string) => {
+      localStorage.setItem(USERNAME, name);
+      dispatch(setUser({ name }));
+      history.push(ROUTES.TODO_LIST);
+    },
+    [dispatch, history],
+  );
 
   return { login };
 };

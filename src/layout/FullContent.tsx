@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode;
 }
 
-const FullContent: FC = ({ children }) => {
+const FullContent: FC<Props> = ({ children }: Props) => {
   return (
     <div className="vh-100 d-flex flex-column">
       <Header />

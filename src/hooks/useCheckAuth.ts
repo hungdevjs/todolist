@@ -12,11 +12,11 @@ const useCheckAuth = () => {
     if (!!username) {
       history.push(ROUTES.TODO_LIST);
     }
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 };
 
 export default useCheckAuth;

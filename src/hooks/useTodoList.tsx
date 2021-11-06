@@ -12,7 +12,7 @@ const useTodoList = () => {
 
   useEffect(() => {
     getTodos((newData: TodoItem[]) => dispatch(setTodos(newData)));
-  }, []);
+  }, [dispatch]);
 
   return { todos };
 };
