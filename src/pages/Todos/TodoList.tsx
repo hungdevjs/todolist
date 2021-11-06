@@ -8,18 +8,21 @@ import TodoItem from '../../components/Todos/TodoItem';
 import useTodoList from '../../hooks/useTodoList';
 
 const TodoList: FC = () => {
-  const { todos } = useTodoList();
+  const { todos, goToTodoDetail } = useTodoList();
   return (
     <FullContent>
       <Container className="p-3">
         <div>
-          <Button>Add new todo</Button>
+          <Button onClick={() => goToTodoDetail()}>Add new todo</Button>
         </div>
         {!!todos.length ? (
           <Grid container spacing={2} className="p-2">
             {todos.map((item) => (
               <Grid item md={4} key={item.id}>
-                <TodoItem item={item} />
+                <TodoItem
+                  item={item}
+                  onEdit={(id: string) => goToTodoDetail(id)}
+                />
               </Grid>
             ))}
           </Grid>

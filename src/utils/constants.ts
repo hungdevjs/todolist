@@ -1,6 +1,7 @@
 export const ROUTES = {
   LOGIN: '/login',
-  TODO_LIST: '/todo-list',
+  TODO_LIST: '/todos',
+  TODO_DETAIL: '/todos/:todoId',
   NEW_TODO: '/new-todo',
 };
 

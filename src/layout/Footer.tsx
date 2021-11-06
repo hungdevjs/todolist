@@ -5,9 +5,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 const Footer: FC = () => {
   return (
     <div className="d-flex align-items-center justify-content-center footer">
-      From <b className="mx-2">hungdev.js</b> with{' '}
-      <KeyboardIcon className="mx-2 text-primary" /> and
-      <FavoriteIcon className="mx-2 text-danger" />
+      From <b className="mx-1">hungdev.js</b> with{' '}
+      <KeyboardIcon className="mx-1 text-primary" /> and
+      <FavoriteIcon className="mx-1 text-danger" />
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Header: FC = () => {
   return (
     <div className="d-flex align-items-center justify-content-between header">
       <span>
-        Hello <b className="mx-2">{user?.name}</b>
+        Hello <b>{user?.name}</b>
       </span>
       <span
         className="cursor-pointer d-flex align-items-center logout-text"

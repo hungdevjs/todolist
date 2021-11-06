@@ -1,6 +1,6 @@
 import Login from '../pages/Login/Login';
 import TodoList from '../pages/Todos/TodoList';
-import NewTodo from '../pages/Todos/NewTodo';
+import TodoDetail from '../pages/Todos/TodoDetail';
 
 import { Route } from '../interfaces/commons';
 import { ROUTES } from '../utils/constants';
@@ -22,9 +22,15 @@ export const authRoutes: Route[] = [
     exact: true,
   },
   {
+    name: 'TodoDetail',
+    path: ROUTES.TODO_DETAIL,
+    component: TodoDetail,
+    exact: true,
+  },
+  {
     name: 'NewTodo',
     path: ROUTES.NEW_TODO,
-    component: NewTodo,
+    component: TodoDetail,
     exact: true,
   },
 ];

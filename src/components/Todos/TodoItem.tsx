@@ -9,13 +9,14 @@ import { DATE_FORMAT } from '../../utils/constants';
 
 interface Props {
   item: ITodoItem;
+  onEdit: Function;
 }
 
-const TodoItem: FC<Props> = ({ item }: Props) => {
+const TodoItem: FC<Props> = ({ item, onEdit }: Props) => {
   return (
     <Grid container className="p-3 todo-item">
       <Grid item xs={3} className="d-flex justify-content-center">
-        <img src={item.image} className="todo-item-image" />
+        <img src={item.image} className="todo-item-image" alt="todo" />
       </Grid>
       <Grid item xs={9}>
         <div className="ml-2">
@@ -28,7 +29,10 @@ const TodoItem: FC<Props> = ({ item }: Props) => {
               <p className="todo-item-header">{item.header}</p>
             </div>
             <div>
-              <EditIcon className="cursor-pointer mx-2 text-primary" />
+              <EditIcon
+                className="cursor-pointer mx-2 text-primary"
+                onClick={() => onEdit(item.id)}
+              />
               <DeleteIcon className="cursor-pointer text-danger" />
             </div>
           </div>
