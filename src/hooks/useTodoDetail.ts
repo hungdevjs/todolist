@@ -104,6 +104,7 @@ const useTodoDetail = () => {
         }
       } catch (err: any) {
         toast.error(err.message);
+        dispatch(setLoading(false));
       }
     },
     [file, updateData, dispatch],
